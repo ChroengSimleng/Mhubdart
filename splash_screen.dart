@@ -46,10 +46,10 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               clipBehavior: Clip.hardEdge,
               child: Image.asset(
-                'assets/logo.png', 
+              'assets/MhubLogo.png',
                 fit: BoxFit.cover,
-                errorBuilder: (c, o, s) => const Icon(Icons.hub, size: 80, color: Color(0xFF2E8B57)),
-              ),
+               errorBuilder: (c, o, s) => const Icon(Icons.hub, size: 80, color: Color(0xFF2E8B57)),
+            ),
             ),
             const SizedBox(height: 30),
             const CircularProgressIndicator(color: Color(0xFF2E8B57)),
