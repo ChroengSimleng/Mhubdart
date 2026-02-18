@@ -1,51 +1,63 @@
-// main.dart - Entry point of the Mhub app, setting up the MaterialApp and theme.
+// splash_screen.dart - Displays a splash screen with the app logo and a loading indicator for 3 seconds before navigating to the Login Page.
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'splash_screen.dart';
-import 'data_service.dart'; // Import this to access DataService
+import 'auth_flow.dart'; // Import the auth file
 
-void main() async {
-  // 1. Ensure Flutter engine is ready
-  WidgetsFlutterBinding.ensureInitialized();
-  
-  // 2. Load the saved data (This is the fix!)
-  await DataService().init();
-  
-  // 3. Start the app
-  runApp(const MhubApp());
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class MhubApp extends StatelessWidget {
-  const MhubApp({super.key});
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Logic: Wait 3 seconds, then go to Login Page
+    Timer(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mhub App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // Colors extracted from your logo
-        primaryColor: const Color(0xFF2E8B57), // Sea Green
-        scaffoldBackgroundColor: Colors.white,
-        
-        // Defining the color scheme for buttons and accents
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2E8B57),
-          secondary: const Color(0xFFF4C430), // Yellow/Gold from logo
-          surface: Colors.white,
-        ),
-        
-
-        // Modern Material 3 design
-        useMaterial3: true,
-        
-        // distinct app bar style
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF2E8B57),
-          foregroundColor: Colors.white,
-          centerTitle: true,
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Logo Container
+            Container(
+              height: 160,
+              width: 160,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                  )
+                ],
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: Image.asset(
+              'assets/MhubLogo.png',
+                fit: BoxFit.cover,
+               errorBuilder: (c, o, s) => const Icon(Icons.hub, size: 80, color: Color(0xFF2E8B57)),
+            ),
+            ),
+            const SizedBox(height: 30),
+            const CircularProgressIndicator(color: Color(0xFF2E8B57)),
+            const SizedBox(height: 10),
+            const Text("Loading Mhub...", style: TextStyle(color: Colors.grey)),
+          ],
         ),
       ),
-      home: const SplashScreen(),
     );
   }
 }
