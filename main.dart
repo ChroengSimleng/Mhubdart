@@ -1,8 +1,16 @@
 // main.dart - Entry point of the Mhub app, setting up the MaterialApp and theme.
 import 'package:flutter/material.dart';
 import 'splash_screen.dart';
+import 'data_service.dart'; // Import this to access DataService
 
-void main() {
+void main() async {
+  // 1. Ensure Flutter engine is ready
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // 2. Load the saved data (This is the fix!)
+  await DataService().init();
+  
+  // 3. Start the app
   runApp(const MhubApp());
 }
 
@@ -26,6 +34,7 @@ class MhubApp extends StatelessWidget {
           surface: Colors.white,
         ),
         
+
         // Modern Material 3 design
         useMaterial3: true,
         
